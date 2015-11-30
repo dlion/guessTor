@@ -19,7 +19,7 @@ func main() {
 	amount := flag.Int("a", 1, "amount of links to generate")
 	top := flag.String("t", "onion", "Top domain")
 	up := flag.Bool("u", false, "Check if the onion domain is up")
-	list := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUWXYZ234567"
+	list := "abcdefghijklmnopqrstuvwxyz234567"
 
 	flag.Parse()
 	rand.Seed(time.Now().UnixNano())
