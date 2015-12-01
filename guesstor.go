@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -9,11 +8,6 @@ import (
 	"net/http"
 	"time"
 )
-
-type Response struct {
-	Url    string
-	Status string
-}
 
 func main() {
 	amount := flag.Int("a", 1, "amount of links to generate")
@@ -30,25 +24,20 @@ func main() {
 			domain[i] = list[rand.Intn(len(list))]
 		}
 		if *up == true {
-			urlUP := fmt.Sprintf("http://ishsup.in/?a=%s.%s&format=json", domain, *top)
+			urlUP := fmt.Sprintf("https://ahmia.fi/address/%s/status", domain)
 			resp, err := http.Get(urlUP)
 			defer resp.Body.Close()
 			body, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
 				panic(err)
 			}
-			var data Response
-			err = json.Unmarshal([]byte(body), &data)
-			if err != nil {
-				panic(err)
-			}
 			var status string
-			if data.Status == "200" {
+			if string(body) == "up" {
 				status = "up"
 			} else {
 				status = "down"
 			}
-			fmt.Printf("http://%s -- STATUS: %s\n", data.Url, status)
+			fmt.Printf("http://%s.onion -- STATUS: %s\n", urlUP, status)
 		} else {
 			fmt.Printf("http://%s.%s\n", domain, *top)
 		}
